@@ -56,7 +56,7 @@ def doc_similarity(tokenized_files, dm_model, vector_size_model, window_model):
             document_similarity = [i, most_similar_vec[1][0],most_similar_vec[1][1]]
             most_similar_documents.append(document_similarity)
 
-        sorted_documents = sorted(most_similar_documents, key=lambda similarity: similarity[2], reverse=True)[0:10]
+        sorted_documents = sorted(most_similar_documents, key=lambda similarity: similarity[2], reverse=True)[0:20]
 
         documents.append(sorted_documents)
 
