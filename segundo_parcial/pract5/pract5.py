@@ -125,7 +125,7 @@ def main():
         pprint(result)
                 
         with open("resultado.txt", 'w+', encoding="utf8") as f:
-            f.write(json.dumps(result, indent=2))        
+            f.write(json.dumps(result, indent=2, ensure_ascii=False))        
 
 
 if __name__ == "__main__":
