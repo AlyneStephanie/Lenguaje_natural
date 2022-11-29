@@ -1,0 +1,176 @@
+noticia 359 - noticia 415   Valor similitud: 0.998003363609314
+noticia 415 - noticia 359   Valor similitud: 0.9980033040046692
+noticia 384 - noticia 364   Valor similitud: 0.997950553894043
+noticia 364 - noticia 384   Valor similitud: 0.9979504942893982
+noticia 179 - noticia 562   Valor similitud: 0.9951426386833191
+noticia 562 - noticia 179   Valor similitud: 0.9951425790786743
+noticia 38 - noticia 236   Valor similitud: 0.99513840675354
+noticia 236 - noticia 38   Valor similitud: 0.9951383471488953
+noticia 158 - noticia 114   Valor similitud: 0.994990348815918
+noticia 114 - noticia 158   Valor similitud: 0.9949902892112732
+
+noticia 359 - noticia 415   Valor similitud: 0.9991443753242493
+noticia 415 - noticia 359   Valor similitud: 0.9991443753242493
+noticia 364 - noticia 384   Valor similitud: 0.9988210797309875
+noticia 384 - noticia 364   Valor similitud: 0.9988210797309875
+noticia 348 - noticia 132   Valor similitud: 0.9980806112289429
+noticia 132 - noticia 348   Valor similitud: 0.9980804920196533
+noticia 158 - noticia 132   Valor similitud: 0.9979989528656006
+noticia 68 - noticia 132   Valor similitud: 0.9979936480522156
+noticia 58 - noticia 116   Valor similitud: 0.9979469180107117
+noticia 116 - noticia 58   Valor similitud: 0.9979469180107117
+
+noticia 364 - noticia 384   Valor similitud: 0.9978785514831543
+noticia 384 - noticia 364   Valor similitud: 0.9978784918785095
+noticia 415 - noticia 359   Valor similitud: 0.9976979494094849
+noticia 359 - noticia 415   Valor similitud: 0.9976978302001953
+noticia 38 - noticia 236   Valor similitud: 0.9965258836746216
+noticia 236 - noticia 38   Valor similitud: 0.9965258836746216
+noticia 132 - noticia 179   Valor similitud: 0.9957960844039917
+noticia 179 - noticia 132   Valor similitud: 0.9957960844039917
+noticia 123 - noticia 179   Valor similitud: 0.9956054091453552
+noticia 348 - noticia 132   Valor similitud: 0.9951689839363098
+
+noticia 415 - noticia 359   Valor similitud: 0.9992162585258484
+noticia 359 - noticia 415   Valor similitud: 0.9992160797119141
+noticia 364 - noticia 384   Valor similitud: 0.9990652799606323
+noticia 384 - noticia 364   Valor similitud: 0.9990652799606323
+noticia 123 - noticia 158   Valor similitud: 0.998017430305481
+noticia 158 - noticia 123   Valor similitud: 0.998017430305481
+noticia 512 - noticia 555   Valor similitud: 0.9979504346847534
+noticia 555 - noticia 512   Valor similitud: 0.9979503750801086
+noticia 21 - noticia 389   Valor similitud: 0.9979006052017212
+noticia 389 - noticia 21   Valor similitud: 0.9979006052017212
+
+noticia 415 - noticia 359   Valor similitud: 0.998603343963623
+noticia 359 - noticia 415   Valor similitud: 0.9986032843589783
+noticia 384 - noticia 364   Valor similitud: 0.9985334873199463
+noticia 364 - noticia 384   Valor similitud: 0.9985334277153015
+noticia 137 - noticia 547   Valor similitud: 0.9980286359786987
+noticia 547 - noticia 137   Valor similitud: 0.9980286359786987
+noticia 562 - noticia 68   Valor similitud: 0.9975537657737732
+noticia 68 - noticia 562   Valor similitud: 0.9975535869598389
+noticia 179 - noticia 562   Valor similitud: 0.9974756240844727
+noticia 130 - noticia 140   Valor similitud: 0.9974365830421448
+
+noticia 359 - noticia 415   Valor similitud: 0.9995715022087097
+noticia 415 - noticia 359   Valor similitud: 0.9995713829994202
+noticia 364 - noticia 384   Valor similitud: 0.9995028376579285
+noticia 384 - noticia 364   Valor similitud: 0.9995027780532837
+noticia 496 - noticia 476   Valor similitud: 0.9992572069168091
+noticia 476 - noticia 496   Valor similitud: 0.9992571473121643
+noticia 116 - noticia 146   Valor similitud: 0.9991101026535034
+noticia 146 - noticia 116   Valor similitud: 0.9991101026535034
+noticia 58 - noticia 116   Valor similitud: 0.9990723729133606
+noticia 158 - noticia 68   Valor similitud: 0.9990439414978027
+
+noticia 415 - noticia 359   Valor similitud: 0.9991204142570496
+noticia 359 - noticia 415   Valor similitud: 0.9991203546524048
+noticia 384 - noticia 364   Valor similitud: 0.9990591406822205
+noticia 364 - noticia 384   Valor similitud: 0.9990590810775757
+noticia 132 - noticia 348   Valor similitud: 0.997763454914093
+noticia 348 - noticia 132   Valor similitud: 0.9977633357048035
+noticia 130 - noticia 140   Valor similitud: 0.9976899027824402
+noticia 140 - noticia 130   Valor similitud: 0.9976898431777954
+noticia 179 - noticia 140   Valor similitud: 0.9975555539131165
+noticia 113 - noticia 452   Valor similitud: 0.9973853230476379
+
+noticia 384 - noticia 364   Valor similitud: 0.9996880292892456
+noticia 364 - noticia 384   Valor similitud: 0.9996878504753113
+noticia 359 - noticia 415   Valor similitud: 0.9996475577354431
+noticia 415 - noticia 359   Valor similitud: 0.9996474981307983
+noticia 140 - noticia 132   Valor similitud: 0.9992662072181702
+noticia 132 - noticia 140   Valor similitud: 0.9992661476135254
+noticia 158 - noticia 132   Valor similitud: 0.9991631507873535
+noticia 227 - noticia 158   Valor similitud: 0.9991414546966553
+noticia 280 - noticia 21   Valor similitud: 0.9990764260292053
+noticia 21 - noticia 280   Valor similitud: 0.9990763664245605
+
+noticia 177 - noticia 171   Valor similitud: 0.9916269779205322
+noticia 171 - noticia 177   Valor similitud: 0.9916269183158875
+noticia 545 - noticia 565   Valor similitud: 0.9905375242233276
+noticia 565 - noticia 545   Valor similitud: 0.9905374646186829
+noticia 359 - noticia 415   Valor similitud: 0.9904611110687256
+noticia 415 - noticia 359   Valor similitud: 0.9904611110687256
+noticia 93 - noticia 554   Valor similitud: 0.9902563691139221
+noticia 554 - noticia 93   Valor similitud: 0.9902563095092773
+noticia 130 - noticia 584   Valor similitud: 0.9897450804710388
+noticia 584 - noticia 130   Valor similitud: 0.9897450804710388
+
+noticia 219 - noticia 361   Valor similitud: 0.9982076287269592
+noticia 361 - noticia 219   Valor similitud: 0.9982075095176697
+noticia 630 - noticia 410   Valor similitud: 0.9980068802833557
+noticia 410 - noticia 630   Valor similitud: 0.9980068206787109
+noticia 429 - noticia 327   Valor similitud: 0.9978862404823303
+noticia 327 - noticia 429   Valor similitud: 0.9978861808776855
+noticia 545 - noticia 58   Valor similitud: 0.997697651386261
+noticia 58 - noticia 545   Valor similitud: 0.9976974725723267
+noticia 289 - noticia 304   Valor similitud: 0.9976616501808167
+noticia 304 - noticia 289   Valor similitud: 0.9976616501808167
+
+noticia 88 - noticia 22   Valor similitud: 0.9922612905502319
+noticia 22 - noticia 88   Valor similitud: 0.9922612309455872
+noticia 135 - noticia 386   Valor similitud: 0.9908978939056396
+noticia 386 - noticia 135   Valor similitud: 0.9908978939056396
+noticia 471 - noticia 572   Valor similitud: 0.9893765449523926
+noticia 572 - noticia 471   Valor similitud: 0.9893765449523926
+noticia 146 - noticia 177   Valor similitud: 0.9875677227973938
+noticia 177 - noticia 146   Valor similitud: 0.9875677227973938
+noticia 585 - noticia 129   Valor similitud: 0.9874652028083801
+noticia 129 - noticia 585   Valor similitud: 0.9874651432037354
+
+noticia 174 - noticia 171   Valor similitud: 0.9970772862434387
+noticia 171 - noticia 174   Valor similitud: 0.9970771670341492
+noticia 454 - noticia 329   Valor similitud: 0.9968218207359314
+noticia 329 - noticia 454   Valor similitud: 0.9968217015266418
+noticia 525 - noticia 454   Valor similitud: 0.9967954754829407
+noticia 414 - noticia 302   Valor similitud: 0.9963270425796509
+noticia 302 - noticia 414   Valor similitud: 0.9963269829750061
+noticia 273 - noticia 329   Valor similitud: 0.9962406754493713
+noticia 447 - noticia 554   Valor similitud: 0.9961243271827698
+noticia 554 - noticia 447   Valor similitud: 0.9961242079734802
+
+noticia 384 - noticia 209   Valor similitud: 0.993451714515686
+noticia 209 - noticia 384   Valor similitud: 0.9934515953063965
+noticia 319 - noticia 597   Valor similitud: 0.9930797219276428
+noticia 597 - noticia 319   Valor similitud: 0.993079662322998
+noticia 151 - noticia 429   Valor similitud: 0.9924172163009644
+noticia 429 - noticia 151   Valor similitud: 0.9924171566963196
+noticia 76 - noticia 377   Valor similitud: 0.9922376871109009
+noticia 377 - noticia 76   Valor similitud: 0.9922376871109009
+noticia 177 - noticia 268   Valor similitud: 0.9921597838401794
+noticia 268 - noticia 177   Valor similitud: 0.9921597838401794
+
+noticia 329 - noticia 565   Valor similitud: 0.9995327591896057
+noticia 565 - noticia 329   Valor similitud: 0.9995326995849609
+noticia 573 - noticia 329   Valor similitud: 0.999222457408905
+noticia 273 - noticia 565   Valor similitud: 0.9991772770881653
+noticia 34 - noticia 454   Valor similitud: 0.9991348385810852
+noticia 454 - noticia 34   Valor similitud: 0.9991347789764404
+noticia 189 - noticia 329   Valor similitud: 0.9991093873977661
+noticia 237 - noticia 597   Valor similitud: 0.9990562200546265
+noticia 597 - noticia 237   Valor similitud: 0.9990562200546265
+noticia 493 - noticia 189   Valor similitud: 0.9990295171737671
+
+noticia 146 - noticia 268   Valor similitud: 0.9935775995254517
+noticia 268 - noticia 146   Valor similitud: 0.9935775995254517
+noticia 174 - noticia 273   Valor similitud: 0.9929524064064026
+noticia 273 - noticia 174   Valor similitud: 0.9929524064064026
+noticia 177 - noticia 146   Valor similitud: 0.9929174780845642
+noticia 133 - noticia 161   Valor similitud: 0.9916428923606873
+noticia 161 - noticia 133   Valor similitud: 0.9916428327560425
+noticia 134 - noticia 133   Valor similitud: 0.9914710521697998
+noticia 270 - noticia 254   Valor similitud: 0.9913709759712219
+noticia 254 - noticia 270   Valor similitud: 0.9913709163665771
+
+noticia 174 - noticia 171   Valor similitud: 0.9990950226783752
+noticia 171 - noticia 174   Valor similitud: 0.9990949034690857
+noticia 363 - noticia 51   Valor similitud: 0.9986488819122314
+noticia 51 - noticia 363   Valor similitud: 0.9986487627029419
+noticia 514 - noticia 313   Valor similitud: 0.998457670211792
+noticia 313 - noticia 514   Valor similitud: 0.9984576106071472
+noticia 187 - noticia 336   Valor similitud: 0.9984344840049744
+noticia 336 - noticia 187   Valor similitud: 0.9984344840049744
+noticia 189 - noticia 273   Valor similitud: 0.9983612895011902
+noticia 273 - noticia 189   Valor similitud: 0.9983612895011902
+

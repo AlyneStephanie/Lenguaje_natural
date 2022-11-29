@@ -56,22 +56,6 @@ def rake(news):
 
 
 
-
-
-
-
-
-    # spanish_stopwords = set(stopwords.words('spanish'))
-    # print(spanish_stopwords)
-    # candidates = []
-    # for i in news:
-    #     words = []
-    #     if i not in spanish_stopwords:
-    #         words.append(i)
-    #     candidates.append(words)
-
-    # print(words)
-
     
 
 def main():
