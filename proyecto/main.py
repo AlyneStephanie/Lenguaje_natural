@@ -1,5 +1,6 @@
 import pandas as pd
 from librerias import tokenizadorLematizador
+from sklearn.model_selection import train_test_split
 
 def main():
 
@@ -64,6 +65,13 @@ def main():
     nuevoDataFrame = pd.DataFrame(data=ObjetoDataFrame)
 
     print(nuevoDataFrame)
+
+    #ahora con el nuevo dataframe, vamos a dividirlo en 80 por ciento entrenamiento y 20 por ciento prueba
+
+    train, test = train_test_split(nuevoDataFrame, test_size=0.2, shuffle = True, random_state=0)	
+
+    print("conjunto de entrenamiento: \n\n", train)
+    print("conjuntod e prueba: \n\n", test)
 
     return 0
 
