@@ -101,7 +101,7 @@ def main():
 
         for palabra in palabras:
 
-            #print("esto es una palabra: ", palabra)
+            print("esto es una palabra: ", palabra)
 
             #comparamos cada elemento con SEL
             for i in range(len(categorias)):
@@ -154,8 +154,8 @@ def main():
     
     #print("estas son las categorias que encontramos:\n\n")
 
-    for categoria in misCategorias:
-         print(categoria)
+    # for categoria in misCategorias:
+    #      print(categoria)
 
 
     return 0
