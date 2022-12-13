@@ -83,9 +83,9 @@ def main():
 
     categorias = [SEL['Palabra'].values, SEL['Categoría'].values, SEL['PFA'].values]
 
-    for categoria in categorias:
+    #for categoria in categorias:
 
-        print(categoria)
+    print(categorias[2][1])
 
     misCategorias = []
 
@@ -126,14 +126,14 @@ def main():
         #Evaluamos cual de los FPA es mayor para asignar la categoria emocional que tiene la noticia
 
         
-        print("alegria", alegria[0])
-        print("sorpresa", sorpresa[0])
-        print("furia", furia[0])
-        print("miedo", miedo[0])
-        print("desagrado", desagrado[0])
-        print("tristeza", trizteza[0])
+        # print("alegria", alegria[0])
+        # print("sorpresa", sorpresa[0])
+        # print("furia", furia[0])
+        # print("miedo", miedo[0])
+        # print("desagrado", desagrado[0])
+        # print("tristeza", trizteza[0])
 
-        print(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]))
+        # print(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]))
 
         if(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]) == 0):
             misCategorias.append([0, "sin categoria"])
@@ -152,10 +152,10 @@ def main():
         else:
             misCategorias.append([0, "sin categoria"])
     
-    print("estas son las categorias que encontramos:\n\n")
+    #print("estas son las categorias que encontramos:\n\n")
 
     for categoria in misCategorias:
-        print(categoria)
+         print(categoria)
 
 
     return 0
