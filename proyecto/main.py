@@ -101,13 +101,14 @@ def main():
 
         for palabra in palabras:
 
-            print("esto es una palabra: ", palabra)
+            #print("esto es una palabra: ", palabra)
 
             #comparamos cada elemento con SEL
-            for i in range(len(categorias)):
+            for i in range(len(categorias[0])):
+                #print(len(categorias))
                 #print("me imprimo")
                 if palabra == categorias[0][i]:
-                    print("aqui hay un match")
+                    #print("aqui hay un match entre: {} y {}".format(palabra, categorias[0][i]))
                     match categorias[1][i]:
                         case "Alegría":
                             #print("se ha hecho match con alegría")
@@ -152,10 +153,10 @@ def main():
         else:
             misCategorias.append([0, "sin categoria"])
     
-    #print("estas son las categorias que encontramos:\n\n")
+    print("estas son las categorias que encontramos:\n\n")
 
-    # for categoria in misCategorias:
-    #      print(categoria)
+    for categoria in misCategorias:
+         print(categoria)
 
 
     return 0
