@@ -2,6 +2,7 @@ import pandas as pd
 from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 import numpy as np
+import json
 
 def main():
 
@@ -79,13 +80,20 @@ def main():
     #con base en el texto que anexó el profesor, el siguiente paso es comparar todas y cada una de las palabras del dataframe ya procesado e ir sumando sus FPA a cada emocion
     #para esto propongo crear una variable para cada emocion, y estas se inicializarán en 0 en cada iteracion, y para cada comparación se le van a ir sumando los FPA correspondientes a dicha emocion
 
+
+    #probemos una logica para hacer lo mismo que estamos haciendo pero ahora con diccionarios:
+
     SEL = pd.read_excel("./SEL/SEL.xlsx")
 
-    categorias = [SEL['Palabra'].values, SEL['Categoría'].values, SEL['PFA'].values]
+    
+    #Palabra	 Nula[%]	 Baja[%] 	 Media[%]	 Alta[%]	 PFA	Categor�a
+    diccionario = {}
+    for i in range(len(SEL['Palabra'])):
 
-    #for categoria in categorias:
-
-    print(categorias[2][1])
+        diccionario[SEL['Palabra'][i]] = {'PFA' : SEL['PFA'][i], 'Categoría' : SEL['Categoría'][i]}
+    
+        
+    print(diccionario['oscuro'])
 
     misCategorias = []
 
@@ -99,30 +107,30 @@ def main():
 
         palabras = str(opinion).replace(',', '').replace('.', '').split(' ')
 
+    
+    # print(SEL['Palabra'])
+
         for palabra in palabras:
 
-            #print("esto es una palabra: ", palabra)
-
-            #comparamos cada elemento con SEL
-            for i in range(len(categorias[0])):
-                #print(len(categorias))
-                #print("me imprimo")
-                if palabra == categorias[0][i]:
-                    #print("aqui hay un match entre: {} y {}".format(palabra, categorias[0][i]))
-                    match categorias[1][i]:
-                        case "Alegría":
-                            #print("se ha hecho match con alegría")
-                            alegria[0]+=float(categorias[2][i])
-                        case "Sorpresa":
-                            sorpresa[0]+=float(categorias[2][i])
-                        case "Enojo":
-                            furia[0]+=float(categorias[2][i])
-                        case "Miedo":
-                            miedo[0]+=float(categorias[2][i])
-                        case "Repulsión":
-                            desagrado[0]+=float(categorias[2][i])
-                        case "Tristeza":
-                            trizteza[0]+=float(categorias[2][i]) 
+            try:
+                #print(diccionario[palabra])
+                match diccionario[palabra]['Categoría']:
+                    case "Alegría":
+                        #print("se ha hecho match con alegría")
+                        alegria[0]+=float(diccionario[palabra]['PFA'])
+                    case "Sorpresa":
+                        sorpresa[0]+=float(diccionario[palabra]['PFA'])
+                    case "Enojo":
+                        furia[0]+=float(diccionario[palabra]['PFA'])
+                    case "Miedo":
+                        miedo[0]+=float(diccionario[palabra]['PFA'])
+                    case "Repulsión":
+                        desagrado[0]+=float(diccionario[palabra]['PFA'])
+                    case "Tristeza":
+                        trizteza[0]+=float(diccionario[palabra]['PFA']) 
+            except:
+                #next(palabra)
+                e = 1
 
         #Evaluamos cual de los FPA es mayor para asignar la categoria emocional que tiene la noticia
 
@@ -156,7 +164,7 @@ def main():
     print("estas son las categorias que encontramos:\n\n")
 
     for categoria in misCategorias:
-         print(categoria)
+        print(categoria)
 
 
     return 0
