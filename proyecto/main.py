@@ -137,6 +137,9 @@ def main():
         
         # print("alegria", alegria[0])
         # print("sorpresa", sorpresa[0])
+
+        #negativas:----------------------------------------------------
+        
         # print("furia", furia[0])
         # print("miedo", miedo[0])
         # print("desagrado", desagrado[0])
@@ -144,22 +147,15 @@ def main():
 
         # print(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]))
 
-        if(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]) == 0):
+        #tomamos el total de PFA de las emociones positivas y el PFA de las negativas y asignamos la polaridad correspondiente
+        polaridad = max([(alegria[0] + sorpresa[0]), (miedo[0] + desagrado[0] + furia[0] + trizteza[0])])
+
+        if(polaridad == 0):
             misCategorias.append([0, "sin categoria"])
-        elif (alegria[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        elif (sorpresa[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        elif (furia[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        elif (miedo[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        elif (desagrado[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        elif (trizteza[0] == max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]])):
-            misCategorias.append(alegria)
-        else:
-            misCategorias.append([0, "sin categoria"])
+        elif (polaridad ==  (alegria[0] + sorpresa[0])):
+            misCategorias.append([polaridad, 'positivo'])
+        elif (polaridad ==  (miedo[0] + desagrado[0] + furia[0] + trizteza[0])):
+            misCategorias.append([polaridad, 'negativo'])
     
     print("estas son las categorias que encontramos:\n\n")
 
