@@ -12,14 +12,14 @@ def main():
     print(dataFrame)
 
     withoutTitles = dataFrame.drop('Title', axis=1)
-    without_Opinions_And_Opinions = withoutTitles.drop('Opinion', axis=1)  #<- dataset sin titulos ni opiniones
+    without_Opinions_And_Titles = withoutTitles.drop('Opinion', axis=1)  #<- dataset sin titulos ni opiniones
 
     titles = dataFrame['Title'].values
     opinions = dataFrame['Opinion'].values
 
 
     print("dataframe sin titulos ni opiniones:\n\n")
-    print(without_Opinions_And_Opinions)
+    print(without_Opinions_And_Titles)
 
     #aplicamos tokenizacion y lematización al texto de las columnas  Title y Opinion
     # print(opinions)
@@ -150,17 +150,35 @@ def main():
         #tomamos el total de PFA de las emociones positivas y el PFA de las negativas y asignamos la polaridad correspondiente
         polaridad = max([(alegria[0] + sorpresa[0]), (miedo[0] + desagrado[0] + furia[0] + trizteza[0])])
 
+
+        #en esta parte del algoritmo no estamo definiendo ningún umbral, unicamente estamos asignando la polaridad de las opiniones con base en que emociones predominan
+        #recordemos que no contamos con esa información explícitamente, así que en este momento unicamente la estamos estimando por lo que predomina en el texto
         if(polaridad == 0):
-            misCategorias.append([0, "sin categoria"])
+            misCategorias.append([0, "neutral"])
         elif (polaridad ==  (alegria[0] + sorpresa[0])):
-            misCategorias.append([polaridad, 'positivo'])
+            misCategorias.append([(alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]), 'positivo'])
         elif (polaridad ==  (miedo[0] + desagrado[0] + furia[0] + trizteza[0])):
-            misCategorias.append([polaridad, 'negativo'])
+            misCategorias.append([(alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]), 'negativo'])
     
     print("estas son las categorias que encontramos:\n\n")
 
-    for categoria in misCategorias:
-        print(categoria)
+    # for categoria in misCategorias:
+    #     print(categoria)
+
+
+    #es momento de integrar los datos obtenidos a un nuevo dataframe
+
+    ObjetoDataFrame = {"Title": train['Title'], "Opinion": train['Opinion'], "Polarity": train['Polarity'], "Attraction": train['Attraction'], "category":misCategorias} 
+
+
+    dataframeConClasificacion = pd.DataFrame(data=ObjetoDataFrame)
+    #dataframeConClasificacion.assign(categoria=lambda x:misCategorias[:])
+    
+
+    print (dataframeConClasificacion)
+    print(type(dataframeConClasificacion))
+
+    #el dataset que acabamos de crear se creó sobre el conjunto de prueba, ahora pra comenzar a entrenar un umbral, podemos convertirlo en un conjunto de validacion de n pliegues para comenzar a experimentar
 
 
     return 0
