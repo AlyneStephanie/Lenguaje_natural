@@ -2,10 +2,12 @@ import pandas as pd
 from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
 import numpy as np
 import json
 
 from librerias import dataSets
+from librerias import vectorizacion
 
 def main():
 
@@ -175,7 +177,7 @@ def main():
 
     #es momento de integrar los datos obtenidos a un nuevo dataframe
 
-    ObjetoDataFrame = {"Title": train['Title'], "Opinion": train['Opinion'], "Polarity": train['Polarity'], "Attraction": train['Attraction'], "category":misCategorias, 'FPA': misFPA} 
+    ObjetoDataFrame = {"Opinion": train['Opinion'], 'category': misCategorias} 
 
 
     dataframeConClasificacion = pd.DataFrame(data=ObjetoDataFrame)
@@ -186,8 +188,9 @@ def main():
     
     #creemos un conjunto de validacion de 5 pliegues para que mediante el metodo leave one out, entrenemos nuestro umbral clasificador
     
-    target = dataframeConClasificacion['FPA'].values
-    X = dataframeConClasificacion.drop('FPA', axis=1).values
+    target = dataframeConClasificacion['category'].values
+    X = dataframeConClasificacion.drop('category', axis=1).values # <- esta isntrucción nos da arreglo de arreglos, esto no no s permitirá realizar correctamente la representacion vectorial
+
 
     dataset = dataSets.crearConjuntosDeValidacion(5, X, target)
 
@@ -205,16 +208,33 @@ def main():
         print(pliegue.X_train)
         i+=1
 
+        x = []
+        
+        for element in pliegue.X_train:
+            x.append(str(element))
 
-        #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacara una representacion vectorial binaria
+        #print(x)
+        #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacar una representacion vectorial binaria
+
+        #sacando la representacion vectorial----------------------------------------------------------------------------------------------
+
+        representacionVectorial = vectorizacion.VectorizarFrec(x)
+
+        print(len(representacionVectorial.toarray()))
+        print(len(pliegue.y_train))
+        print(type(pliegue.y_train[0]))
+
+        print(pliegue.y_train[0])
+        #-----------------------------------------------------------------------------------------------------------------------------------
 
         clf = GaussianNB()
 
-        clf.fit(pliegue.X_train, pliegue.y_train)
+        clf.fit(representacionVectorial.toarray(), pliegue.y_train)
 
-        y_predict = clf.predict(pliegue.X_train)
+        y_predict = clf.predict(representacionVectorial.toarray())
 
         print(y_predict)
+        print(accuracy_score(pliegue.y_train, y_predict))
 
     return 0
 
