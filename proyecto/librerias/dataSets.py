@@ -26,21 +26,21 @@ class data_set:
 
 def generate_train_test(file_name, pliegues):
 	#primero generamos un archivo que se contiene el dataset mezclado
-	dataset = open("weatherAUS.csv", "r", encoding='utf8')
-	datos = dataset.readlines()
-	dataset.close()
-	cadena = ""
+	# dataset = open("weatherAUS.csv", "r", encoding='utf8')
+	# datos = dataset.readlines()
+	# dataset.close()
+	# cadena = ""
 
-	random.shuffle(datos)
+	# random.shuffle(datos)
 
-	cadena =  str(encabezado)
+	# cadena =  str(encabezado)
 
-	for element in datos:
-		cadena += str(element)
+	# for element in datos:
+	# 	cadena += str(element)
 
-	dataset = open("weatherAUS2.csv", "w", encoding='utf8')
-	dataset.write(str(cadena))	
-	dataset.close()
+	# dataset = open("weatherAUS2.csv", "w", encoding='utf8')
+	# dataset.write(str(cadena))	
+	# dataset.close()
 
 	# ~ pd.options.display.max_colwidth = 200		#Define el acho de las columnas (ancho máximo por default 50 caracteres)		
 	#Lee el corpus original del archivo de entrada y lo pasa a un DataFrame
@@ -78,7 +78,7 @@ def crearConjuntosDeValidacion(pliegues, X, y):
 	
 	#Crea pliegues para la validación cruzada
 	print ('----------------------')
-	print('\n VALIDACION CRUZADA k=2\n')
+	#print('\n VALIDACION CRUZADA k=2\n')
 	validation_sets = []
 	kf = KFold(n_splits=pliegues)
 	c=0
@@ -109,56 +109,56 @@ def crearConjuntosDeValidacion(pliegues, X, y):
 	return (my_data_set)
 
 
-if __name__=='__main__':
+# if __name__=='__main__':
 
-	dataset = open("weatherAUS.csv", "r", encoding='utf8')
-	datos = dataset.readlines()
-	dataset.close()
-	cadena = ""
-	encabezadoX = ""
-	encabezadoY = ""
-	encabezado = datos.pop(0)
+# 	dataset = open("weatherAUS.csv", "r", encoding='utf8')
+# 	datos = dataset.readlines()
+# 	dataset.close()
+# 	cadena = ""
+# 	encabezadoX = ""
+# 	encabezadoY = ""
+# 	encabezado = datos.pop(0)
 
-	arrEncabezado = encabezado.split(',')
-	encabezadoY = arrEncabezado.pop()
+# 	arrEncabezado = encabezado.split(',')
+# 	encabezadoY = arrEncabezado.pop()
 
-	pliegues = int(input("numero de pliegues: "))
+# 	pliegues = int(input("numero de pliegues: "))
 
-	for i in range(len(arrEncabezado)):
+# 	for i in range(len(arrEncabezado)):
 
-		if i < len(arrEncabezado)-1:
-			encabezadoX += arrEncabezado[i] + ","
-		else:
-			encabezadoX += arrEncabezado[i]
+# 		if i < len(arrEncabezado)-1:
+# 			encabezadoX += arrEncabezado[i] + ","
+# 		else:
+# 			encabezadoX += arrEncabezado[i]
 
-	my_data_set=generate_train_test('weatherAUS2.csv', pliegues)
+# 	my_data_set=generate_train_test('weatherAUS2.csv', pliegues)
 	
-	#Guarda el dataset en formato csv
-	np.savetxt("data_test.csv", my_data_set.test_set.X_test, delimiter=",", fmt="%s",
-           header="x")
+# 	#Guarda el dataset en formato csv
+# 	np.savetxt("data_test.csv", my_data_set.test_set.X_test, delimiter=",", fmt="%s",
+#            header="x")
 	
-	np.savetxt("target_test.csv", my_data_set.test_set.y_test, delimiter=",", fmt="%s",
-           header="y", comments="")
+# 	np.savetxt("target_test.csv", my_data_set.test_set.y_test, delimiter=",", fmt="%s",
+#            header="y", comments="")
     
-	i = 1
-	for val_set in my_data_set.validation_set:
-		np.savetxt("data_validation_train_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.X_train, delimiter=",", fmt="%s",
-           header=encabezadoX, comments="")
-		np.savetxt("data_test_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.X_test, delimiter=",", fmt="%s",
-           header=encabezadoX, comments="")
-		np.savetxt("target_validation_train_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.y_train, delimiter=",", fmt="%s",
-           header=encabezadoY, comments="")
-		np.savetxt("target_test" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.y_test, delimiter=",", fmt="%s",
-           header=encabezadoY, comments="")
-		i = i + 1
+# 	i = 1
+# 	for val_set in my_data_set.validation_set:
+# 		np.savetxt("data_validation_train_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.X_train, delimiter=",", fmt="%s",
+#            header=encabezadoX, comments="")
+# 		np.savetxt("data_test_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.X_test, delimiter=",", fmt="%s",
+#            header=encabezadoX, comments="")
+# 		np.savetxt("target_validation_train_" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.y_train, delimiter=",", fmt="%s",
+#            header=encabezadoY, comments="")
+# 		np.savetxt("target_test" +str(pliegues)+ "_" +str(i)+ ".csv", val_set.y_test, delimiter=",", fmt="%s",
+#            header=encabezadoY, comments="")
+# 		i = i + 1
 	
-	#Guarda el dataset en pickle
-	dataset_file = open ('dataset.pkl','wb')
-	pickle.dump(my_data_set, dataset_file)
-	dataset_file.close()
+# 	#Guarda el dataset en pickle
+# 	dataset_file = open ('dataset.pkl','wb')
+# 	pickle.dump(my_data_set, dataset_file)
+# 	dataset_file.close()
 	
-	dataset_file = open ('dataset.pkl','rb')
-	my_data_set_pickle = pickle.load(dataset_file)
-	print ("-----------------------------------------------")
-	#print (*my_data_set_pickle.test_set.X_test)
+# 	dataset_file = open ('dataset.pkl','rb')
+# 	my_data_set_pickle = pickle.load(dataset_file)
+# 	print ("-----------------------------------------------")
+# 	#print (*my_data_set_pickle.test_set.X_test)
 

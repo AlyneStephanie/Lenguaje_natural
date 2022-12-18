@@ -1,8 +1,11 @@
 import pandas as pd
 from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
 import numpy as np
 import json
+
+from librerias import dataSets
 
 def main():
 
@@ -12,14 +15,14 @@ def main():
     print(dataFrame)
 
     withoutTitles = dataFrame.drop('Title', axis=1)
-    without_Opinions_And_Opinions = withoutTitles.drop('Opinion', axis=1)  #<- dataset sin titulos ni opiniones
+    without_Opinions_And_Titles = withoutTitles.drop('Opinion', axis=1)  #<- dataset sin titulos ni opiniones
 
     titles = dataFrame['Title'].values
     opinions = dataFrame['Opinion'].values
 
 
     print("dataframe sin titulos ni opiniones:\n\n")
-    print(without_Opinions_And_Opinions)
+    print(without_Opinions_And_Titles)
 
     #aplicamos tokenizacion y lematización al texto de las columnas  Title y Opinion
     # print(opinions)
@@ -96,6 +99,7 @@ def main():
     print(diccionario['oscuro'])
 
     misCategorias = []
+    misFPA = []
 
     for opinion in train['Opinion'].values:
         alegria = [0, "alegria"]
@@ -150,18 +154,67 @@ def main():
         #tomamos el total de PFA de las emociones positivas y el PFA de las negativas y asignamos la polaridad correspondiente
         polaridad = max([(alegria[0] + sorpresa[0]), (miedo[0] + desagrado[0] + furia[0] + trizteza[0])])
 
+
+        #en esta parte del algoritmo no estamo definiendo ningún umbral, unicamente estamos asignando la polaridad de las opiniones con base en que emociones predominan
+        #recordemos que no contamos con esa información explícitamente, así que en este momento unicamente la estamos estimando por lo que predomina en el texto
         if(polaridad == 0):
-            misCategorias.append([0, "sin categoria"])
+            misCategorias.append("neutral")
+            misFPA.append(0)
         elif (polaridad ==  (alegria[0] + sorpresa[0])):
-            misCategorias.append([polaridad, 'positivo'])
+            misCategorias.append('positivo')
+            misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
         elif (polaridad ==  (miedo[0] + desagrado[0] + furia[0] + trizteza[0])):
-            misCategorias.append([polaridad, 'negativo'])
+            misCategorias.append('negativo')
+            misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
     
     print("estas son las categorias que encontramos:\n\n")
 
-    for categoria in misCategorias:
-        print(categoria)
+    # for categoria in misCategorias:
+    #     print(categoria)
 
+
+    #es momento de integrar los datos obtenidos a un nuevo dataframe
+
+    ObjetoDataFrame = {"Title": train['Title'], "Opinion": train['Opinion'], "Polarity": train['Polarity'], "Attraction": train['Attraction'], "category":misCategorias, 'FPA': misFPA} 
+
+
+    dataframeConClasificacion = pd.DataFrame(data=ObjetoDataFrame)
+    #dataframeConClasificacion.assign(categoria=lambda x:misCategorias[:])
+
+    print (dataframeConClasificacion)
+    print(type(dataframeConClasificacion))
+    
+    #creemos un conjunto de validacion de 5 pliegues para que mediante el metodo leave one out, entrenemos nuestro umbral clasificador
+    
+    target = dataframeConClasificacion['FPA'].values
+    X = dataframeConClasificacion.drop('FPA', axis=1).values
+
+    dataset = dataSets.crearConjuntosDeValidacion(5, X, target)
+
+    #el dataset que acabamos de crear se creó sobre el conjunto de prueba, ahora pra comenzar a entrenar un umbral, podemos convertirlo en un conjunto de validacion de n pliegues para comenzar a experimentar
+    i = 1
+
+    umbral = [-0.3,0.3]  #<- [limite inferior, limite superior]
+    for pliegue in dataset.validation_set:
+        
+        #aqui es donde vamos a realizar el entrenamiento del umbral colocando como target el FPA
+        #el entrenamiento primero se basará en predecir el valor de FPA, y después de haber inicializado un umbral, se pasara dos veces
+        #en la misma iteracion para ver si el umbral se vuelve más angosto o mas amplio
+
+        print("pliegue ", i)
+        print(pliegue.X_train)
+        i+=1
+
+
+        #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacara una representacion vectorial binaria
+
+        clf = GaussianNB()
+
+        clf.fit(pliegue.X_train, pliegue.y_train)
+
+        y_predict = clf.predict(pliegue.X_train)
+
+        print(y_predict)
 
     return 0
 
