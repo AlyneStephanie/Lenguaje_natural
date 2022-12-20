@@ -68,7 +68,7 @@ def main():
     listaTitulos = open("./titulosTokenizadoLematizado.txt", "r").readlines()
 
 
-    ObjetoDataFrame = {"Title": listaTitulos, "Opinion": listaOpiniones, "Polarity": dataFrame['Polarity'], "Attraction": dataFrame['Attraction']} 
+    ObjetoDataFrame = {"Title": listaTitulos, "Opinion": listaOpiniones, 'Polarity': dataFrame['Polarity']} 
     nuevoDataFrame = pd.DataFrame(data=ObjetoDataFrame)
 
     print(nuevoDataFrame)
@@ -102,6 +102,7 @@ def main():
 
     misCategorias = []
     misFPA = []
+    FPAS = []
 
     for opinion in train['Opinion'].values:
         alegria = [0, "alegria"]
@@ -162,12 +163,15 @@ def main():
         if(polaridad == 0):
             misCategorias.append("neutral")
             misFPA.append(0)
+            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
         elif (polaridad ==  (alegria[0] + sorpresa[0])):
             misCategorias.append('positivo')
             misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
+            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
         elif (polaridad ==  (miedo[0] + desagrado[0] + furia[0] + trizteza[0])):
             misCategorias.append('negativo')
             misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
+            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
     
     print("estas son las categorias que encontramos:\n\n")
 
@@ -177,7 +181,7 @@ def main():
 
     #es momento de integrar los datos obtenidos a un nuevo dataframe
 
-    ObjetoDataFrame = {"Opinion": train['Opinion'], 'category': misCategorias} 
+    ObjetoDataFrame = {"Title": train['Title'], "Opinion": train['Opinion'], 'FPA': misFPA, 'Polarity': train['Polarity'], 'category': misCategorias} 
 
 
     dataframeConClasificacion = pd.DataFrame(data=ObjetoDataFrame)
@@ -188,8 +192,8 @@ def main():
     
     #creemos un conjunto de validacion de 5 pliegues para que mediante el metodo leave one out, entrenemos nuestro umbral clasificador
     
-    target = dataframeConClasificacion['category'].values
-    X = dataframeConClasificacion.drop('category', axis=1).values # <- esta isntrucción nos da arreglo de arreglos, esto no no s permitirá realizar correctamente la representacion vectorial
+    target = dataframeConClasificacion['Polarity'].values
+    X = dataframeConClasificacion.drop('Polarity', axis=1).values # <- esta isntrucción nos da arreglo de arreglos, esto no no s permitirá realizar correctamente la representacion vectorial
 
 
     dataset = dataSets.crearConjuntosDeValidacion(5, X, target)
@@ -197,44 +201,68 @@ def main():
     #el dataset que acabamos de crear se creó sobre el conjunto de prueba, ahora pra comenzar a entrenar un umbral, podemos convertirlo en un conjunto de validacion de n pliegues para comenzar a experimentar
     i = 1
 
-    umbral = [-0.3,0.3]  #<- [limite inferior, limite superior]
-    for pliegue in dataset.validation_set:
+    umbral = [[-0.3,-0.2], [-0.2,0.1], [0.1,0.3]]  #<- 5 umbrales, 1 por categoria, los extremos estan limpios, pues si el FPA es inferior al limite inferior del umbral del extremo, entonces la categoria es 1
+    predicciones_polaridad = []
+
+    #vamos a crear un vector el cual contenga las predicciones 
+    for element in dataframeConClasificacion['FPA']:
+        if(element < umbral[0][0]):
+            predicciones_polaridad.append(1)
+        elif(umbral[0][0] <= element and element < umbral[0][1]):
+            predicciones_polaridad.append(2)
+        elif(umbral[1][0] <= element and element < umbral[1][1]):
+            predicciones_polaridad.append(3)
+        elif(umbral[2][0] <= element and element <= umbral[2][1]):
+            predicciones_polaridad.append(4)
+        elif(umbral[2][1] < element):
+            predicciones_polaridad.append(5)
+
+    #medimos el accuracy
+    print("el accuraccy obtenido:\n")
+    print(len(predicciones_polaridad))
+    print(len(dataframeConClasificacion['Polarity']))
+    print(accuracy_score(dataframeConClasificacion['Polarity'], predicciones_polaridad))
+
+
+    # for pliegue in dataset.validation_set:
         
-        #aqui es donde vamos a realizar el entrenamiento del umbral colocando como target el FPA
-        #el entrenamiento primero se basará en predecir el valor de FPA, y después de haber inicializado un umbral, se pasara dos veces
-        #en la misma iteracion para ver si el umbral se vuelve más angosto o mas amplio
+    #     #aqui es donde vamos a realizar el entrenamiento del umbral colocando como target el FPA
+    #     #el entrenamiento primero se basará en predecir el valor de FPA, y después de haber inicializado un umbral, se pasara dos veces
+    #     #en la misma iteracion para ver si el umbral se vuelve más angosto o mas amplio
 
-        print("pliegue ", i)
-        print(pliegue.X_train)
-        i+=1
+    #     print("pliegue ", i)
+    #     print(pliegue.X_train)
+    #     i+=1
 
-        x = []
+    #     Las lineas comentadas debajo de este renglon, son una propuesta de como usar machine learning para lcasificar, esto se puede usar en la siguiente etapa
+
+    #     x = []
         
-        for element in pliegue.X_train:
-            x.append(str(element))
+    #     for element in pliegue.X_train:
+    #         x.append(str(element))
 
-        #print(x)
-        #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacar una representacion vectorial binaria
+    #     #print(x)
+    #     #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacar una representacion vectorial binaria
 
-        #sacando la representacion vectorial----------------------------------------------------------------------------------------------
+    #     #sacando la representacion vectorial----------------------------------------------------------------------------------------------
 
-        representacionVectorial = vectorizacion.VectorizarFrec(x)
+    #     representacionVectorial = vectorizacion.VectorizarFrec(x)
 
-        print(len(representacionVectorial.toarray()))
-        print(len(pliegue.y_train))
-        print(type(pliegue.y_train[0]))
+    #     print(len(representacionVectorial.toarray()))
+    #     print(len(pliegue.y_train))
+    #     print(type(pliegue.y_train[0]))
 
-        print(pliegue.y_train[0])
-        #-----------------------------------------------------------------------------------------------------------------------------------
+    #     print(pliegue.y_train[0])
+    #     #-----------------------------------------------------------------------------------------------------------------------------------
 
-        clf = GaussianNB()
+    #     clf = GaussianNB()
 
-        clf.fit(representacionVectorial.toarray(), pliegue.y_train)
+    #     clf.fit(representacionVectorial.toarray(), pliegue.y_train)
 
-        y_predict = clf.predict(representacionVectorial.toarray())
+    #     y_predict = clf.predict(representacionVectorial.toarray())
 
-        print(y_predict)
-        print(accuracy_score(pliegue.y_train, y_predict))
+    #     print(y_predict)
+    #     print(accuracy_score(pliegue.y_train, y_predict))
 
     return 0
 
