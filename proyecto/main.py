@@ -3,8 +3,11 @@ from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
 import json
+import matplotlib.pyplot as plt
 
 from librerias import dataSets
 from librerias import vectorizacion
@@ -201,7 +204,7 @@ def main():
     #el dataset que acabamos de crear se creó sobre el conjunto de prueba, ahora pra comenzar a entrenar un umbral, podemos convertirlo en un conjunto de validacion de n pliegues para comenzar a experimentar
     i = 1
 
-    umbral = [[-0.3,-0.2], [-0.2,0.1], [0.1,0.3]]  #<- 5 umbrales, 1 por categoria, los extremos estan limpios, pues si el FPA es inferior al limite inferior del umbral del extremo, entonces la categoria es 1
+    umbral = [[-0.2,-0.1], [-0.1,0.01], [0.01,0.3]]  #<- 5 umbrales, 1 por categoria, los extremos estan limpios, pues si el FPA es inferior al limite inferior del umbral del extremo, entonces la categoria es 1
     predicciones_polaridad = []
 
     #vamos a crear un vector el cual contenga las predicciones 
@@ -222,6 +225,20 @@ def main():
     print(len(predicciones_polaridad))
     print(len(dataframeConClasificacion['Polarity']))
     print(accuracy_score(dataframeConClasificacion['Polarity'], predicciones_polaridad))
+
+    #reporte de la clasificacion
+    target_names = ['1','2','3','4','5']
+
+    print(classification_report(dataframeConClasificacion['Polarity'], predicciones_polaridad))
+    print (confusion_matrix(dataframeConClasificacion['Polarity'], predicciones_polaridad))
+
+    #matriz de confusion
+
+    cm = confusion_matrix(dataframeConClasificacion['Polarity'], predicciones_polaridad)
+    print (cm)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+    disp.plot()
+    plt.show()
 
 
     # for pliegue in dataset.validation_set:
