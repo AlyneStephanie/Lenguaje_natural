@@ -3,6 +3,7 @@ from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
@@ -71,160 +72,34 @@ def main():
     listaTitulos = open("./titulosTokenizadoLematizado.txt", "r").readlines()
 
 
-    ObjetoDataFrame = {"Title": listaTitulos, "Opinion": listaOpiniones, 'Polarity': dataFrame['Polarity']} 
+    ObjetoDataFrame = {"Title": listaTitulos, "Opinion": listaOpiniones, 'Polarity': dataFrame['Polarity'], 'Attraction': dataFrame['Attraction']} 
     nuevoDataFrame = pd.DataFrame(data=ObjetoDataFrame)
 
     print(nuevoDataFrame)
 
     #ahora con el nuevo dataframe, vamos a dividirlo en 80 por ciento entrenamiento y 20 por ciento prueba
 
-    train, test = train_test_split(nuevoDataFrame, test_size=0.2, shuffle = True, random_state=0)	
+    # train, test = train_test_split(nuevoDataFrame, test_size=0.2, shuffle = True, random_state=0)	
 
-    print("conjunto de entrenamiento: \n\n", train)
-    print("conjuntod e prueba: \n\n", test)
+    # print("conjunto de entrenamiento: \n\n", train)
+    # print("conjuntod e prueba: \n\n", test)
 
-
-    #vamos a comenzar con la logica para determinar emociones
-    #con base en el texto que anexó el profesor, el siguiente paso es comparar todas y cada una de las palabras del dataframe ya procesado e ir sumando sus FPA a cada emocion
-    #para esto propongo crear una variable para cada emocion, y estas se inicializarán en 0 en cada iteracion, y para cada comparación se le van a ir sumando los FPA correspondientes a dicha emocion
-
-
-    #probemos una logica para hacer lo mismo que estamos haciendo pero ahora con diccionarios:
-
-    SEL = pd.read_excel("./SEL/SEL.xlsx")
-
+    # #con el conjunto de entrenamiento armamos un conjunto de validacion
     
-    #Palabra	 Nula[%]	 Baja[%] 	 Media[%]	 Alta[%]	 PFA	Categor�a
-    diccionario = {}
-    for i in range(len(SEL['Palabra'])):
+    X = nuevoDataFrame.drop(['Polarity', 'Attraction'], axis=1).values
+    target = nuevoDataFrame['Polarity'].values
 
-        diccionario[SEL['Palabra'][i]] = {'PFA' : SEL['PFA'][i], 'Categoría' : SEL['Categoría'][i]}
-    
-        
-    print(diccionario['oscuro'])
+    x = []
 
-    misCategorias = []
-    misFPA = []
-    FPAS = []
+    for element in X:
+        x.append(str(element))
 
-    for opinion in train['Opinion'].values:
-        alegria = [0, "alegria"]
-        sorpresa = [0, "aorpresa"]
-        furia = [0, "furia"]
-        miedo = [0, "miedo"]
-        desagrado = [0, "desagrado"]
-        trizteza = [0, "tristeza"]
+    representacionVectorial = vectorizacion.VectorizarFrec(x)
 
-        palabras = str(opinion).replace(',', '').replace('.', '').split(' ')
+    dataset = dataSets.crearConjuntosDeValidacion(5, representacionVectorial, target)
 
-    
-    # print(SEL['Palabra'])
+    print("se ha vectorizado")
 
-        for palabra in palabras:
-
-            try:
-                #print(diccionario[palabra])
-                match diccionario[palabra]['Categoría']:
-                    case "Alegría":
-                        #print("se ha hecho match con alegría")
-                        alegria[0]+=float(diccionario[palabra]['PFA'])
-                    case "Sorpresa":
-                        sorpresa[0]+=float(diccionario[palabra]['PFA'])
-                    case "Enojo":
-                        furia[0]+=float(diccionario[palabra]['PFA'])
-                    case "Miedo":
-                        miedo[0]+=float(diccionario[palabra]['PFA'])
-                    case "Repulsión":
-                        desagrado[0]+=float(diccionario[palabra]['PFA'])
-                    case "Tristeza":
-                        trizteza[0]+=float(diccionario[palabra]['PFA']) 
-            except:
-                #next(palabra)
-                e = 1
-
-        #Evaluamos cual de los FPA es mayor para asignar la categoria emocional que tiene la noticia
-
-        
-        # print("alegria", alegria[0])
-        # print("sorpresa", sorpresa[0])
-
-        #negativas:----------------------------------------------------
-        
-        # print("furia", furia[0])
-        # print("miedo", miedo[0])
-        # print("desagrado", desagrado[0])
-        # print("tristeza", trizteza[0])
-
-        # print(max([alegria[0], sorpresa[0], furia[0], trizteza[0], desagrado[0], miedo[0]]))
-
-        #tomamos el total de PFA de las emociones positivas y el PFA de las negativas y asignamos la polaridad correspondiente
-        polaridad = max([(alegria[0] + sorpresa[0]), (miedo[0] + desagrado[0] + furia[0] + trizteza[0])])
-
-
-        #en esta parte del algoritmo no estamo definiendo ningún umbral, unicamente estamos asignando la polaridad de las opiniones con base en que emociones predominan
-        #recordemos que no contamos con esa información explícitamente, así que en este momento unicamente la estamos estimando por lo que predomina en el texto
-        if(polaridad == 0):
-            misCategorias.append("neutral")
-            misFPA.append(0)
-            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
-        elif (polaridad ==  (alegria[0] + sorpresa[0])):
-            misCategorias.append('positivo')
-            misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
-            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
-        elif (polaridad ==  (miedo[0] + desagrado[0] + furia[0] + trizteza[0])):
-            misCategorias.append('negativo')
-            misFPA.append((alegria[0] + sorpresa[0])-(miedo[0] + desagrado[0] + furia[0] + trizteza[0]))
-            FPAS.append([alegria[0], sorpresa[0], miedo[0], desagrado[0], furia[0], trizteza[0]])
-    
-    print("estas son las categorias que encontramos:\n\n")
-
-    # for categoria in misCategorias:
-    #     print(categoria)
-
-
-    #es momento de integrar los datos obtenidos a un nuevo dataframe
-
-    ObjetoDataFrame = {"Title": train['Title'], "Opinion": train['Opinion'], 'FPA': misFPA, 'Polarity': train['Polarity'], 'category': misCategorias} 
-
-
-    dataframeConClasificacion = pd.DataFrame(data=ObjetoDataFrame)
-    #dataframeConClasificacion.assign(categoria=lambda x:misCategorias[:])
-
-    print (dataframeConClasificacion)
-    print(type(dataframeConClasificacion))
-    
-    #creemos un conjunto de validacion de 5 pliegues para que mediante el metodo leave one out, entrenemos nuestro umbral clasificador
-    
-    target = dataframeConClasificacion['Polarity'].values
-    X = dataframeConClasificacion.drop('Polarity', axis=1).values # <- esta isntrucción nos da arreglo de arreglos, esto no no s permitirá realizar correctamente la representacion vectorial
-
-
-    dataset = dataSets.crearConjuntosDeValidacion(5, X, target)
-
-    # #el dataset que acabamos de crear se creó sobre el conjunto de prueba, ahora pra comenzar a entrenar un umbral, podemos convertirlo en un conjunto de validacion de n pliegues para comenzar a experimentar
-    # i = 1
-
-    # umbral = [[-0.2,-0.1], [-0.1,0.01], [0.01,0.3]]  #<- 5 umbrales, 1 por categoria, los extremos estan limpios, pues si el FPA es inferior al limite inferior del umbral del extremo, entonces la categoria es 1
-    # predicciones_polaridad = []
-
-    # #vamos a crear un vector el cual contenga las predicciones 
-    # for element in dataframeConClasificacion['FPA']:
-    #     if(element < umbral[0][0]):
-    #         predicciones_polaridad.append(1)
-    #     elif(umbral[0][0] <= element and element < umbral[0][1]):
-    #         predicciones_polaridad.append(2)
-    #     elif(umbral[1][0] <= element and element < umbral[1][1]):
-    #         predicciones_polaridad.append(3)
-    #     elif(umbral[2][0] <= element and element <= umbral[2][1]):
-    #         predicciones_polaridad.append(4)
-    #     elif(umbral[2][1] < element):
-    #         predicciones_polaridad.append(5)
-
-    # #medimos el accuracy
-    # print("el accuraccy obtenido:\n")
-    # print(len(predicciones_polaridad))
-    # print(len(dataframeConClasificacion['Polarity']))
-    # print(accuracy_score(dataframeConClasificacion['Polarity'], predicciones_polaridad))
 
     # #reporte de la clasificacion
     # target_names = ['1','2','3','4','5']
@@ -240,47 +115,93 @@ def main():
     # disp.plot()
     # plt.show()
 
+    i = 0
+    clf = GaussianNB()
 
     for pliegue in dataset.validation_set:
         
         #aqui es donde vamos a realizar el entrenamiento del umbral colocando como target el FPA
-        #el entrenamiento primero se basará en predecir el valor de FPA, y después de haber inicializado un umbral, se pasara dos veces
-        #en la misma iteracion para ver si el umbral se vuelve más angosto o mas amplio
+        #el entrenamiento prime    
 
-        print("pliegue ", i)
-        print(pliegue.X_train)
         i+=1
 
         # Las lineas comentadas debajo de este renglon, son una propuesta de como usar machine learning para lcasificar, esto se puede usar en la siguiente etapa
 
-        x = []
+        # x = []
+        # xtest = []
         
-        for element in pliegue.X_train:
-            x.append(str(element))
+        # for element in pliegue.X_train:
+        #     x.append(str(element))
 
-        #print(x)
-        #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacar una representacion vectorial binaria
+        # for element in pliegue.X_test:
+        #     xtest.append(str(element))
 
-        #sacando la representacion vectorial----------------------------------------------------------------------------------------------
+        # #print(x)
+        # #vamos a utilizar el modelo de clasificacion gaussiana para predecir el fpa, pero para ello, primero debemos de sacar una representacion vectorial binaria
 
-        representacionVectorial = vectorizacion.VectorizarFrec(x)
+        # #sacando la representacion vectorial----------------------------------------------------------------------------------------------
 
-        print(len(representacionVectorial.toarray()))
-        print(len(pliegue.y_train))
+        # representacionVectorial = vectorizacion.VectorizarFrec(x)
+        # representacionVectorialTest = vectorizacion.VectorizarFrec(xtest)
+
+        print(pliegue.X_train.toarray())
+        print(pliegue.y_train.shape[0])
         print(type(pliegue.y_train[0]))
 
         print(pliegue.y_train[0])
+        
         #-----------------------------------------------------------------------------------------------------------------------------------
+        
+        
 
-        clf = GaussianNB()
+        clf.partial_fit(pliegue.X_train.toarray(), pliegue.y_train, classes = [1,2,3,4,5])
+        #clf.fit(pliegue.X_train.toarray(), pliegue.y_train)
 
-        clf.fit(representacionVectorial.toarray(), pliegue.y_train)
-
-        y_predict = clf.predict(representacionVectorial.toarray())
+        y_predict = clf.predict(pliegue.X_test.toarray())
 
         print(y_predict)
-        print(accuracy_score(pliegue.y_train, y_predict))
+        print(pliegue.y_test)
+        print(accuracy_score(pliegue.y_test, y_predict))
+        print(f1_score(pliegue.y_test, y_predict, average = None))
 
+        # #reporte de la clasificacion
+        target_names = ['1','2','3','4','5']
+
+        print(classification_report(pliegue.y_test, y_predict))
+        print (confusion_matrix(pliegue.y_test, y_predict))
+
+        #matriz de confusion
+
+        cm = confusion_matrix(pliegue.y_test, y_predict)
+        print (cm)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+        disp.plot()
+        plt.show()
+
+    #ahora lo implementamos en el conjunto de prueba
+
+    y_predict = clf.predict(dataset.test_set.X_test.toarray())
+
+    print(y_predict)
+    print(dataset.test_set.y_test)
+    print(accuracy_score(dataset.test_set.y_test, y_predict))
+    print(f1_score(dataset.test_set.y_test, y_predict, average = None))
+
+    # #reporte de la clasificacion
+    target_names = ['1','2','3','4','5']
+
+    print(classification_report(dataset.test_set.y_test, y_predict))
+    print (confusion_matrix(dataset.test_set.y_test, y_predict))
+
+    #matriz de confusion
+
+    cm = confusion_matrix(dataset.test_set.y_test, y_predict)
+    print (cm)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+    disp.plot()
+    plt.show()
+        
+        
     return 0
 
 if __name__ == "__main__":
