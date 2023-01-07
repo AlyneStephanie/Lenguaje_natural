@@ -3,6 +3,7 @@ from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
@@ -115,6 +116,7 @@ def main():
     # plt.show()
 
     i = 0
+    clf = GaussianNB()
 
     for pliegue in dataset.validation_set:
         
@@ -150,15 +152,17 @@ def main():
         
         #-----------------------------------------------------------------------------------------------------------------------------------
         
-        clf = GaussianNB()
-
-        clf.fit(pliegue.X_train.toarray(), pliegue.y_train)
         
+
+        clf.partial_fit(pliegue.X_train.toarray(), pliegue.y_train, classes = [1,2,3,4,5])
+        #clf.fit(pliegue.X_train.toarray(), pliegue.y_train)
+
         y_predict = clf.predict(pliegue.X_test.toarray())
 
         print(y_predict)
         print(pliegue.y_test)
         print(accuracy_score(pliegue.y_test, y_predict))
+        print(f1_score(pliegue.y_test, y_predict, average = None))
 
         # #reporte de la clasificacion
         target_names = ['1','2','3','4','5']
@@ -173,7 +177,30 @@ def main():
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
         disp.plot()
         plt.show()
-        exit(0)
+
+    #ahora lo implementamos en el conjunto de prueba
+
+    y_predict = clf.predict(dataset.test_set.X_test.toarray())
+
+    print(y_predict)
+    print(dataset.test_set.y_test)
+    print(accuracy_score(dataset.test_set.y_test, y_predict))
+    print(f1_score(dataset.test_set.y_test, y_predict, average = None))
+
+    # #reporte de la clasificacion
+    target_names = ['1','2','3','4','5']
+
+    print(classification_report(dataset.test_set.y_test, y_predict))
+    print (confusion_matrix(dataset.test_set.y_test, y_predict))
+
+    #matriz de confusion
+
+    cm = confusion_matrix(dataset.test_set.y_test, y_predict)
+    print (cm)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=target_names)
+    disp.plot()
+    plt.show()
+        
         
     return 0
 
