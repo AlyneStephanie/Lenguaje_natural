@@ -87,7 +87,8 @@ def main():
     # #con el conjunto de entrenamiento armamos un conjunto de validacion
     
     X = nuevoDataFrame.drop(['Polarity', 'Attraction'], axis=1).values
-    target = nuevoDataFrame['Polarity'].values
+    #target = nuevoDataFrame['Polarity'].values
+    target = nuevoDataFrame['Attraction'].values
 
     x = []
 
@@ -127,11 +128,13 @@ def main():
     contador1 = 0
     contador2 = int(X_train.shape[0]/5)
     for i in range(4):
-        clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = [1,2,3,4,5])
+        #clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = [1,2,3,4,5])
+        clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = ['Hotel', 'Restaurant', 'Attractive'])
         contador1+= int(X_train.shape[0]/5)
         contador2+= int(X_train.shape[0]/5)
 
-    clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = [1,2,3,4,5])
+    #clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = [1,2,3,4,5])
+    clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = ['Hotel', 'Restaurant', 'Attractive'])
     
 
     #ahora lo implementamos en el conjunto de prueba
@@ -144,7 +147,8 @@ def main():
     print(f1_score(y_test, y_predict, average = None))
 
     # #reporte de la clasificacion
-    target_names = ['1','2','3','4','5']
+    #target_names = ['1','2','3','4','5']
+    target_names = ['Hotel', 'Restaurant', 'Attractive']
 
     print(classification_report(y_test, y_predict))
     print (confusion_matrix(y_test, y_predict))
