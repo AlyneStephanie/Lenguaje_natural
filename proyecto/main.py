@@ -2,10 +2,13 @@ import pandas as pd
 from librerias import tokenizadorLematizador
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn import svm
+from sklearn.pipeline import FeatureUnion
 import numpy as np
 import json
 import matplotlib.pyplot as plt
@@ -87,8 +90,8 @@ def main():
     # #con el conjunto de entrenamiento armamos un conjunto de validacion
     
     X = nuevoDataFrame.drop(['Polarity', 'Attraction'], axis=1).values
-    #target = nuevoDataFrame['Polarity'].values
-    target = nuevoDataFrame['Attraction'].values
+    target = nuevoDataFrame['Polarity'].values
+    #target = nuevoDataFrame['Attraction'].values
 
     x = []
 
@@ -101,10 +104,20 @@ def main():
 
     #probando con un conjunto de entrenamiento y uno de prueba------------------------------------------------
 
-    X_train, X_test, y_train, y_test = train_test_split(representacionVectorial, target,test_size=0.2, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(representacionVectorial, target,test_size=0.2, shuffle=True, random_state=0)
 
     #---------------------------------------------------------------------------------------------------------
+    # SEL = pd.read_excel("./SEL/SEL.xlsx")
 
+    
+    # #Palabra	 Nula[%]	 Baja[%] 	 Media[%]	 Alta[%]	 PFA	Categor�a
+    # diccionario = {}
+    # for i in range(len(SEL['Palabra'])):
+
+    #     diccionario[SEL['Palabra'][i]] = {'PFA' : SEL['PFA'][i], 'Categoría' : SEL['Categoría'][i]}
+
+    # union = FeatureUnion([("PFA", SEL['PFA'])])
+    # union.fit_transform(X_train.toarray())
     #print("se ha vectorizado")
 
 
@@ -123,20 +136,22 @@ def main():
     # plt.show()
 
     i = 0
-    clf = MultinomialNB()
+    #clf = LogisticRegression(C=50, solver='lbfgs')
+    clf = svm.SVC(kernel='rbf', gamma=0.5, C=0.1).fit(X_train, y_train)
+
     # clf.fit(X_train.toarray(), y_train)
     contador1 = 0
     contador2 = int(X_train.shape[0]/5)
-    for i in range(4):
-        #clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = [1,2,3,4,5])
-        clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = ['Hotel', 'Restaurant', 'Attractive'])
-        contador1+= int(X_train.shape[0]/5)
-        contador2+= int(X_train.shape[0]/5)
+    # for i in range(4):
+    #     #clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = [1,2,3,4,5])
+    #     clf.partial_fit(X_train.toarray()[contador1 : contador2], y_train[contador1 : contador2], classes = ['Hotel', 'Restaurant', 'Attractive'])
+    #     contador1+= int(X_train.shape[0]/5)
+    #     contador2+= int(X_train.shape[0]/5)
 
-    #clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = [1,2,3,4,5])
-    clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = ['Hotel', 'Restaurant', 'Attractive'])
+    # #clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = [1,2,3,4,5])
+    # clf.partial_fit(X_train.toarray()[contador2:], y_train[contador2:], classes = ['Hotel', 'Restaurant', 'Attractive'])
     
-
+    clf.fit(X_train.toarray(), y_train)
     #ahora lo implementamos en el conjunto de prueba
 
     y_predict = clf.predict(X_test.toarray())
